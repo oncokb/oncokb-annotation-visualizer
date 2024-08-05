@@ -3,7 +3,6 @@ import ReactTable, { Column, TableProps } from 'react-table';
 import { observer } from 'mobx-react';
 import { computed } from 'mobx';
 import classNames from 'classnames';
-import { COLOR_BLUE } from './../../config/theme';
 import {
   HandleColumnsChange,
   MUTATIONS_TABLE_COLUMN_KEY,

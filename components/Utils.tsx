@@ -784,7 +784,7 @@ export function getDefaultColumnDefinition<T>(
     case MUTATIONS_TABLE_COLUMN_KEY.TUMOR_TYPE:
       return {
         id: MUTATIONS_TABLE_COLUMN_KEY.TUMOR_TYPE,
-        Header: <span className="font-medium">Tumor Type</span>,
+        Header: <span className="font-medium">Tumor type</span>,
         accessor: 'tumorType',
         style: { whiteSpace: 'normal' },
         width: 130,
@@ -795,7 +795,7 @@ export function getDefaultColumnDefinition<T>(
     case MUTATIONS_TABLE_COLUMN_KEY.FDA_LEVEL:
       return {
         id: MUTATIONS_TABLE_COLUMN_KEY.FDA_LEVEL,
-        Header: <span className="font-medium">FDA Level</span>,
+        Header: <span className="font-medium">FDA level</span>,
         accessor: 'fdaLevel',
         style: { whiteSpace: 'normal' },
         width: 150,
@@ -830,7 +830,7 @@ export function getDefaultColumnDefinition<T>(
     case TREATMENTS_TABLE_COLUMN_KEY.TREATMENT_FDA_LEVEL:
       return {
         id: TREATMENTS_TABLE_COLUMN_KEY.TREATMENT_FDA_LEVEL,
-        Header: <span className="font-medium">FDA Level</span>,
+        Header: <span className="font-medium">FDA level</span>,
         accessor: 'treatmentFdaLevel',
         style: { whiteSpace: 'normal' },
         width: 130,

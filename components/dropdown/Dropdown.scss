@@ -24,19 +24,22 @@
   }
 
   .dropdown-menu {
-    width: 100%;
+    text-align: left;
+    width: 300px;
     background: white;
     border: 1px solid #ccc;
     border-radius: 4px;
     max-height: 15rem;
-    padding: 3%;
+    padding: 15ps;
     overflow-y: auto;
     position: absolute;
     z-index: 1000;
+    top: 100%; 
+    right: 0; 
     &::-webkit-scrollbar {
       width: 5px;
     }
-
+  }
     &::-webkit-scrollbar-track {
       background: #f1f1f1;
     }
@@ -44,7 +47,7 @@
     &::-webkit-scrollbar-thumb {
       background: $grey;
     }
-  }
+  
 
   .form-check {
     padding: 5px 10px;

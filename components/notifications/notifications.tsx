@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import Alert from './../alert/Alert';
-import { COLOR_ERROR } from './../../config/theme';
-import './styles.scss';
+import './styles.scss'
 
 interface NotificationImplication {
   message: string;
   type: 'danger' | 'primary' | 'warning' | 'success';
-}
-
-enum NotificationType {
-  'danger' = 'exclamation-circle',
-  'primary' = 'info-circle',
-  'warning' = 'exclamation-triangle',
-  'success' = 'check',
 }
 
 interface NotificationProps {
@@ -30,11 +22,10 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
 
   return (
     <div className="notification-container">
-      <div className="notification-icon-container">
+      <div className="notification-icon-container" onClick={toggleShow}>
         <i
-          className="fa fa-bell fa-lg notification-icon"
-          onClick={toggleShow}
-          aria-hidden="true"
+          className="fa fa-bell fa-lg notification-icon" data-testid="notification-icon"
+          aria-hidden="true" 
         >
           {showNotificationsCount && (
             <span className="notification-badge">
@@ -44,27 +35,13 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
         </i>
       </div>
       {show && (
-        <div className="notification-dropdown">
+        <div className="notification-dropdown" data-testid="notification-dropdown">
           {notifications.length > 0 ? (
             notifications.map(notification => (
-              <Alert key={notification.message} variant={notification.type}>
-                <i
-                  className={`fa fa-${
-                    NotificationType[notification.type]
-                  } mr-2`}
-                  aria-hidden="true"
-                ></i>
-                {notification.message}
-              </Alert>
+              <Alert notification={notification} />
             ))
           ) : (
-            <Alert variant="warning">
-              <i
-                className={`fa fa-${NotificationType['warning']} mr-2`}
-                aria-hidden="true"
-              ></i>
-              No Messages.
-            </Alert>
+            <Alert notification={{message:'No Messages', type:'warning'}}/>
           )}
         </div>
       )}

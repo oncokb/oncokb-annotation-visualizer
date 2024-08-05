@@ -1,11 +1,11 @@
 import React, { useState, ReactElement } from 'react';
 import { TabProps } from './Tab';
 import './styles.scss';
-import Notifs from './../notifications/notifications';
+import Notifications from './../notifications/notifications';
 import { NotificationImplication, PatientInfo } from './../../config/constants';
 import { COLOR_BLUE } from './../../config/theme';
 import { generatePDF } from './../Utils';
-import { responses } from 'app/oncokb-annotation-visualisation/config/APIResponse';
+import { responses } from './../../config/APIResponse';
 
 interface TabsProps {
   children: ReactElement<TabProps>[];
@@ -148,12 +148,11 @@ const Tabs: React.FC<TabsProps> = ({
             className="oncokb-download-button"
             data-testid="oncokb-download-button"
             onClick={handleDownloadClick} // Add click handler
-            style={{ color: COLOR_BLUE, cursor: 'pointer' }}
           >
-            <i className="fa fa-download" aria-hidden="true"></i>
+            <i className="fa fa-download" aria-hidden="true" style={{ color: COLOR_BLUE, cursor: 'pointer' }}></i>
           </div>
           <div>
-            <Notifs notifications={notifications || []} />
+            <Notifications notifications={notifications || []} />
           </div>
         </div>
       </div>

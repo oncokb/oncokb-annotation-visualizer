@@ -19,11 +19,15 @@ const Dropdown = ({ options, selectedOptions, onChange }) => {
 
   return (
     <div className="custom-dropdown" ref={dropdownRef}>
-      <button onClick={handleToggle} className="btn full-width">
+      <button
+        onClick={handleToggle}
+        className="btn full-width"
+        data-testid="dropdown-button"
+      >
         Select Columns
       </button>
       {isOpen && (
-        <div className="dropdown-menu show">
+        <div className="dropdown-menu show" data-testid="dropdown-menu">
           {options.map(option => (
             <div key={option.value} className="form-check">
               <input
@@ -32,6 +36,7 @@ const Dropdown = ({ options, selectedOptions, onChange }) => {
                 id={option.value}
                 checked={selectedOptions.includes(option.value)}
                 onChange={() => handleCheckboxChange(option)}
+                data-testid={`checkbox`}
               />
               <label className="form-check-label" htmlFor={option.value}>
                 {option.label}

@@ -53,17 +53,14 @@ const config = {
     },
   ],
   webpackFinal: async (config, { configType }) => {
-    // Ensure that `config.module.rules` is defined
     if (!config.module.rules) {
       config.module.rules = [];
     }
 
-    // Find the index of the CSS rule if it exists
     const ruleCssIndex = config.module.rules.findIndex(
       (rule) => rule.test && rule.test.toString() === "/\\.css$/"
     );
-
-    // If the CSS rule is found, update its options for CSS modules
+    
     if (ruleCssIndex !== -1) {
       config.module.rules[ruleCssIndex].use = config.module.rules[ruleCssIndex].use.map((item) => {
         if (item.loader && item.loader.includes("/css-loader/")) {
@@ -78,7 +75,6 @@ const config = {
         return item;
       });
     } else {
-      // If the CSS rule is not found, add a new rule
       config.module.rules.push({
         test: /\.css$/,
         sideEffects: true,
@@ -120,7 +116,6 @@ const config = {
       ],
     });
 
-    // Add alias for components
     config.resolve.alias = {
       ...config.resolve.alias,
       '@components': path.resolve(__dirname, '../src/components'),

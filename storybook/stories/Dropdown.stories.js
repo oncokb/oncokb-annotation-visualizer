@@ -61,14 +61,12 @@ export const Default= {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Find the button and open the dropdown
     const selectColumnsButton = canvas.getByTestId('dropdown-button');
     expect(canvas.queryByTestId('dropdown-menu')).not.toBeInTheDocument();
 
     await userEvent.click(selectColumnsButton);
     expect(canvas.getByTestId('dropdown-menu')).toBeInTheDocument();
 
-    // Close the dropdown
     await userEvent.click(selectColumnsButton);
     expect(canvas.queryByTestId('dropdown-menu')).not.toBeInTheDocument();
   },

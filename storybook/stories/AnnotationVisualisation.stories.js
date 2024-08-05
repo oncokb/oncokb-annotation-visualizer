@@ -52,17 +52,13 @@ export const Default = {
 
     for(let dropdownButton of dropdownButtons){
 
-      // Click the first dropdown button
       await userEvent.click(dropdownButton);
   
-      // Check that dropdown menu is visible
       const dropdownMenu = canvas.getByTestId('dropdown-menu');
       expect(dropdownMenu).toBeInTheDocument();
   
-      // Get all checkboxes within the dropdown
       const checkboxes = canvas.getAllByTestId('checkbox');
   
-      // Click each checkbox conditionally based on its initial state
       for (let checkbox of checkboxes) {
         if (checkbox.checked) {
           await userEvent.click(checkbox);
@@ -70,11 +66,6 @@ export const Default = {
         } else {
           await userEvent.click(checkbox);
           expect(checkbox).toBeChecked();
-          // const label = annotationColumns.find(column => column.key === checkbox.id)?.label;
-
-          // const columnHeaders = canvas.getAllByText(label);
-          // console.log(columnHeaders)
-          // expect(columnHeaders.length).toBeGreaterThan(1);
         }
       }
   

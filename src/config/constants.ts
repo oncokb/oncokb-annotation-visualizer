@@ -1,5 +1,5 @@
 import { default as URL } from 'url';
-import { ActionMeta, ValueType } from 'react-select/src/types';
+import { ActionMeta, ValueType } from 'react-select/src/types'; // tslint:disable-line no-submodule-imports
 
 export const ONCOGENIC_MUTATIONS = 'Oncogenic Mutations';
 export const FUSIONS = 'Fusions';
@@ -130,12 +130,14 @@ export enum MUTATION_EFFECT {
 }
 
 export type HandleColumnsChange = (
+  // @ts-ignore
   value: ValueType<ColumnOption>,
-  actionMeta: ActionMeta<ColumnOption>
+  // @ts-ignore
+  actionMeta?: ActionMeta<ColumnOption>
 ) => void;
 
-interface ColumnOption {
-  value: TREATMENTS_TABLE_COLUMN_KEY | MUTATIONS_TABLE_COLUMN_KEY | undefined;
+export interface ColumnOption {
+  value: TREATMENTS_TABLE_COLUMN_KEY | MUTATIONS_TABLE_COLUMN_KEY ;
   label: string | undefined;
 }
 
@@ -235,6 +237,24 @@ export enum NOTIFICATION_TYPE {
   SUCCESS = 'success',
 }
 
+export type ProcessedData = {
+  level: string;
+  gene: string;
+  mutation: string;
+  oncogenicity: string;
+  biologicalEffect: string;
+  alterationType: string;
+  tumorType: string;
+};
+
+export type ProcessedTreatmentData = {
+  biomarker: string,
+  drugNames: string[],
+  annotation: string,
+  alterationType: string,
+  level: string
+}
+
 export type AnnotationImplication = {
   level: string;
   gene: string;
@@ -247,6 +267,8 @@ export type AnnotationImplication = {
   mutationDescription: string;
   tumorType: string;
   fdaLevel: string;
+  lastUpdate: string;
+  dataVersion: string;
 };
 
 export type TreatmentImplication = {
@@ -258,6 +280,9 @@ export type TreatmentImplication = {
   treatmentFdaLevel: string;
   treatmentDescription: string;
 };
+
+export type TreatmentImplicationKeys = keyof TreatmentImplication;
+export type AnnotationImplicationKeys = keyof AnnotationImplication;
 
 export type NotificationImplication = {
   message: string;
@@ -361,20 +386,6 @@ export const LEVEL_PRIORITY: LEVELS[] = [
   LEVELS.Tx1,
   LEVELS.NA,
 ];
-
-// OncoKB API constants
-
-export type ArticleAbstract = {
-  abstract: string;
-
-  link: string;
-};
-
-export type Citations = {
-  abstracts: Array<ArticleAbstract>;
-
-  pmids: Array<string>;
-};
 
 export type InfoLevel = {
   colorHex: string;

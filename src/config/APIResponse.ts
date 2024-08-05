@@ -1342,6 +1342,7 @@ export const exampleAnnotations: AnnotationImplication[] = responses.map(
     // citations:   response['mutationEffect']['citations'],
     fdaLevel: response['highestFdaLevel'],
     lastUpdate: response['lastUpdate'],
+    dataVersion: response['dataVersion']
   })
 );
 export const exampleTreatments: TreatmentImplication[] = responses.reduce(

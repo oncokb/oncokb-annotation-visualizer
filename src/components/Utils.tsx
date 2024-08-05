@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
   LEVEL_PRIORITY,
   LEVEL_TYPES,
@@ -7,8 +6,10 @@ import {
   ONCOGENICITY,
   MUTATION_EFFECT,
   TREATMENTS_TABLE_COLUMN_KEY,
+  ProcessedData,
+  ProcessedTreatmentData,
 } from './../config/constants';
-import { Alteration, Citations } from '../config/constants';
+import { Alteration } from '../config/constants';
 import html2pdf from 'html2pdf.js';
 import InfoIcon from './icons/InfoIcon';
 import {
@@ -280,33 +281,6 @@ export const AlterationPageLink: React.FunctionComponent<{
   );
 };
 
-export function sortNumber(a: number, b: number): number {
-  if (!_.isNumber(a)) {
-    if (!_.isNumber(b)) {
-      return 0;
-    } else {
-      return 1;
-    }
-  }
-  if (!_.isNumber(b)) {
-    return -1;
-  }
-  return a - b;
-}
-
-export function sortByAlteration(a: Alteration, b: Alteration): number {
-  // force null and undefined to the bottom
-  let result = sortNumber(a.proteinStart, b.proteinStart);
-
-  if (result === 0) {
-    result = sortNumber(a.proteinEnd, b.proteinEnd);
-  }
-
-  if (result === 0) {
-    result = a.name.localeCompare(b.name);
-  }
-  return result;
-}
 
 export function defaultSortMethod(a: any, b: any): number {
   // force null and undefined to the bottom
@@ -327,13 +301,6 @@ export function defaultSortMethod(a: any, b: any): number {
 
   // returning 0 or undefined will use any subsequent column sorting methods or the row index as a tiebreaker
   return 0;
-}
-
-export function citationsSortMethod(a: Citations, b: Citations) {
-  const numOfReferencesA = a.abstracts.length + a.pmids.length;
-  const numOfReferencesB = b.abstracts.length + b.pmids.length;
-
-  return numOfReferencesA - numOfReferencesB;
 }
 
 const oncogenicityOrder = [
@@ -903,7 +870,7 @@ export const compareVersions = (
   return minor1 - minor2;
 };
 
-export const loadImageAsBase64 = path => {
+export const loadImageAsBase64 = (path:string) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = 'Anonymous';
@@ -913,7 +880,7 @@ export const loadImageAsBase64 = path => {
       c.width = img.width;
       c.height = img.height;
       const ctx = c.getContext('2d');
-      ctx.drawImage(img, 0, 0);
+      ctx?.drawImage(img, 0, 0);
       const dataURL = c.toDataURL('image/png');
       resolve(dataURL);
     };
@@ -922,14 +889,30 @@ export const loadImageAsBase64 = path => {
   });
 };
 
+type PatientData={
+  col1: string;
+  col2: string;
+  col3: string;
+  col4: string;
+}
+
+interface GroupedData {
+  [key: string]: ProcessedData[];
+}
+
+interface GroupedTreatmentData {
+  [key: string]: ProcessedTreatmentData[];
+}
+
+
 export const generatePDF = async (
-  patientData,
-  processedData,
-  processedTreatmentData
-) => {
+  patientData: PatientData[],
+  processedData: ProcessedData[],
+  processedTreatmentData: ProcessedTreatmentData[]
+): Promise<void> => {
   try {
     const logoBase64 = await loadImageAsBase64(logoImage);
-    const groupedData = processedData.reduce((acc, row) => {
+    const groupedData = processedData.reduce<GroupedData>((acc, row) => {
       const { alterationType } = row;
       if (!acc[alterationType]) {
         acc[alterationType] = [];
@@ -938,7 +921,7 @@ export const generatePDF = async (
       return acc;
     }, {});
 
-    const groupedTreatmentData = processedTreatmentData.reduce((acc, row) => {
+    const groupedTreatmentData = processedTreatmentData.reduce<GroupedTreatmentData>((acc, row) => {
       const { alterationType } = row;
       if (!acc[alterationType]) {
         acc[alterationType] = [];
@@ -960,7 +943,7 @@ export const generatePDF = async (
         <tbody>
           ${patientData
             .map(
-              item => `
+              (item:PatientData) => `
             <tr style="border-top: 1px solid #ffc63c; border-bottom: 1px solid #ffc63c;">
               <td style="background-color: #ffeecc; padding: 8px; font-weight: bold;">${item.col1}</td>
               <td style="background-color: #ffeecc; padding: 8px;">${item.col2}</td>
@@ -994,7 +977,7 @@ export const generatePDF = async (
             ${rows
               .map((row, index) => {
                 const levelClass = LevelOfEvidenceToClassnames(
-                  row.levelOfEvidence
+                  row.level
                 );
                 const oncogenicityClass = OncogenicityToClassnames(
                   row.oncogenicity
@@ -1042,7 +1025,7 @@ export const generatePDF = async (
               <td colspan="3">Alteration Type: ${alterationType}</td>
             </tr>
             ${rows
-              .map((row, index) => {
+              .map((row, index)=> {
                 const backgroundColor = index % 2 === 0 ? '#f3f3f3' : '#ffffff'; // Alternate row color
                 return `
                 <tr style="background-color: ${backgroundColor}; page-break-inside: avoid;">

@@ -34,6 +34,11 @@ export interface AnnotationVisualisationProps {
   notifications: NotificationImplication[];
 }
 
+interface metadata{
+    lastUpdate: string,
+    dataVersion: string,
+}
+
 export interface AnnotationVisualisationState {
   selectedAnnotationColumns: string[];
   selectedTreatmentColumns: string[];
@@ -111,7 +116,7 @@ export class AnnotationVisualisation extends React.Component<
   }
 
   @computed
-  get lastUpdateAndVersion(): {} {
+  get lastUpdateAndVersion(): metadata {
     let latestDate: string | null = null;
     let highestVersion: string | null = null;
     this.allAnnotations.forEach(annotation => {
@@ -131,8 +136,8 @@ export class AnnotationVisualisation extends React.Component<
     });
 
     return {
-      lastUpdate: latestDate,
-      dataVersion: highestVersion,
+      lastUpdate: latestDate || 'NA',
+      dataVersion: highestVersion || 'NA',
     };
   }
 
@@ -224,7 +229,7 @@ export class AnnotationVisualisation extends React.Component<
         alterationType
       ),
       onFilter: (data: TreatmentImplication, keyword) =>
-        filterByKeyword(data[column.prop], keyword),
+        filterByKeyword((data as any)[column.prop], keyword),
     }));
   }
 
@@ -243,7 +248,7 @@ export class AnnotationVisualisation extends React.Component<
         alterationType
       ),
       onFilter: (data: AnnotationImplication, keyword) =>
-        filterByKeyword(data[column.prop], keyword),
+        filterByKeyword((data as any)[column.prop], keyword),
     }));
   }
 
@@ -293,7 +298,7 @@ export class AnnotationVisualisation extends React.Component<
             const existingEntry = treatmentsMap.get(biomarkerKey);
             if (existingEntry) {
               const existingDrugs = new Set(existingEntry.drug.split(', '));
-              drugNames.forEach(drug => existingDrugs.add(drug));
+              drugNames.forEach((drug: any) => existingDrugs.add(drug));
               existingEntry.drug = Array.from(existingDrugs).join(', ');
             }
           } else {

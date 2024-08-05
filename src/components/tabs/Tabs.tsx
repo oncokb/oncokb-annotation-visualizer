@@ -43,7 +43,7 @@ const Tabs: React.FC<TabsProps> = ({
       const data = [
         {
           col1: 'Sample ID',
-          col2: patientInfo.patientId,
+          col2: patientInfo.patientId||'NA',
           col3: 'Gender',
           col4: 'Male',
         },
@@ -51,7 +51,7 @@ const Tabs: React.FC<TabsProps> = ({
           col1: 'Age',
           col2: '48',
           col3: 'Date of Report',
-          col4: lastUpdate,
+          col4: lastUpdate||'NA',
         },
       ];
 
@@ -59,7 +59,7 @@ const Tabs: React.FC<TabsProps> = ({
         gene: response.query.hugoSymbol || 'NA',
         mutation: response.query.alteration || 'NA',
         oncogenicity: response.oncogenic || 'NA',
-        levelOfEvidence: response.highestSensitiveLevel || 'NA',
+        level: response.highestSensitiveLevel || 'NA',
         biologicalEffect: response.mutationEffect.knownEffect || 'NA',
         tumorType: response.query.tumorType || 'NA',
         alterationType: response.query.alterationType || 'NA',
@@ -141,8 +141,8 @@ const Tabs: React.FC<TabsProps> = ({
         </div>
         <div className="oncokb-tab-header-right">
           <div className="data-info">
-            <div>Annotation based on {dataVersion || 'NA'}</div>
-            <div>Updated on {lastUpdate || 'NA'}</div>
+            <div>Annotation based on {dataVersion}</div>
+            <div>Updated on {lastUpdate}</div>
           </div>
           <div
             className="oncokb-download-button"

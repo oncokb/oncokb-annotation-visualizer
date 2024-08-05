@@ -1,7 +1,15 @@
 import React, { useState, useRef } from 'react';
 import './Dropdown.scss';
+import { ColumnOption } from '../../config/constants';
+import { HandleColumnsChange } from '../../config/constants';
 
-const Dropdown = ({ options, selectedOptions, onChange }) => {
+interface DropdownProps {
+  options: ColumnOption[];
+  selectedOptions: string[];
+  onChange: HandleColumnsChange;
+}
+
+const Dropdown: React.FC<DropdownProps> = ({ options, selectedOptions, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -9,12 +17,12 @@ const Dropdown = ({ options, selectedOptions, onChange }) => {
     setIsOpen(!isOpen);
   };
 
-  const handleCheckboxChange = option => {
+  const handleCheckboxChange = (option:ColumnOption) => {
     const newSelectedOptions = selectedOptions.includes(option.value)
-      ? selectedOptions.filter(item => item !== option.value)
+      ? selectedOptions.filter((item: string) => item !== option.value)
       : [...selectedOptions, option.value];
 
-    onChange(newSelectedOptions.map(value => ({ value })));
+    onChange(newSelectedOptions.map((value) => ({ value })));
   };
 
   return (

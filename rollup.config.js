@@ -15,12 +15,12 @@ export default [
     input: "src/index.ts",
     output: [
       {
-        dir: packageJson.main,
+        dir: "dist/cjs", 
         format: "cjs",
         sourcemap: true,
       },
       {
-        dir: packageJson.module,
+        dir: "dist/esm", 
         format: "esm",
         sourcemap: true,
       },

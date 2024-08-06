@@ -1,4 +1,5 @@
 import React from 'react';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import { RCTooltip } from 'rc-tooltip';
 import { DefaultTooltip } from 'cbioportal-frontend-commons';

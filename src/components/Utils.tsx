@@ -484,7 +484,7 @@ export function getDefaultColumnDefinition<T>(
       accessor: string;
       minWidth?: number;
       width: number;
-      style?: object;
+      style?: any;
       defaultSortDesc: boolean;
       Cell?: React.FC<{ original: any }>;
       sortMethod?: (a: any, b: any) => number;

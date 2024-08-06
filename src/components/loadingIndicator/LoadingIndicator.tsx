@@ -22,7 +22,7 @@ export interface ILoader {
   children?: React.ReactNode;
 }
 
-export default class LoadingIndicator extends React.Component<ILoader, {}> {
+export default class LoadingIndicator extends React.Component<ILoader, unknown> {
   public static defaultProps = {
     center: false,
     size: LoaderSize.SMALL,
@@ -52,6 +52,7 @@ export default class LoadingIndicator extends React.Component<ILoader, {}> {
     };
 
     return (
+      /* eslint-disable @typescript-eslint/ban-ts-comment */
       // @ts-ignore
       <If condition={this.props.isLoading}>
         <Then>

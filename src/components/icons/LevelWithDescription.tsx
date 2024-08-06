@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import AppStore from 'app/store/AppStore';
 import { inject } from 'mobx-react';

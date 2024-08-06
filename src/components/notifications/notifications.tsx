@@ -37,8 +37,8 @@ const Notification: React.FC<NotificationProps> = ({ notifications }) => {
       {show && (
         <div className="notification-dropdown" data-testid="notification-dropdown">
           {notifications.length > 0 ? (
-            notifications.map(notification => (
-              <Alert notification={notification} />
+            notifications.map((notification, index) => (
+              <Alert notification={notification} key={index} />
             ))
           ) : (
             <Alert notification={{message:'No Messages', type:'warning'}}/>

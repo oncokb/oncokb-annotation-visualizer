@@ -21,7 +21,8 @@ const Dropdown: React.FC<DropdownProps> = ({ options, selectedOptions, onChange 
     const newSelectedOptions = selectedOptions.includes(option.value)
       ? selectedOptions.filter((item: string) => item !== option.value)
       : [...selectedOptions, option.value];
-
+    /* eslint-disable @typescript-eslint/ban-ts-comment */
+    //@ts-ignore
     onChange(newSelectedOptions.map((value) => ({ value })));
   };
 

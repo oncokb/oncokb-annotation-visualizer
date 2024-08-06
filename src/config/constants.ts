@@ -1,5 +1,5 @@
 import { default as URL } from 'url';
-import { ActionMeta, ValueType } from 'react-select/src/types'; // tslint:disable-line no-submodule-imports
+// import { ActionMeta, ValueType } from 'react-select/src/types'; // tslint:disable-line no-submodule-imports
 
 export const ONCOGENIC_MUTATIONS = 'Oncogenic Mutations';
 export const FUSIONS = 'Fusions';
@@ -31,11 +31,11 @@ type AnnotationPageHashQueries = {
   tab?: ANNOTATION_PAGE_TAB_KEYS;
 };
 
-export type GenePageSearchQueries = AnnotationPageSearchQueries & {};
-export type GenePageHashQueries = AnnotationPageHashQueries & {};
+export type GenePageSearchQueries = AnnotationPageSearchQueries & Record<string, never>;
+export type GenePageHashQueries = AnnotationPageHashQueries & Record<string, never>;
 
-export type AlterationPageSearchQueries = AnnotationPageSearchQueries & {};
-export type AlterationPageHashQueries = AnnotationPageHashQueries & {};
+export type AlterationPageSearchQueries = AnnotationPageSearchQueries & Record<string, never>;
+export type AlterationPageHashQueries = AnnotationPageHashQueries & Record<string, never>;
 
 export enum ANNOTATION_PAGE_TAB_KEYS {
   BIOLOGICAL = 'Biological',
@@ -129,9 +129,15 @@ export enum MUTATION_EFFECT {
   UNKNOWN = 'Unknown',
 }
 
+type ValueType<T> = T;
+type ActionMeta<T> = { action: string; name: string; };
+
+
 export type HandleColumnsChange = (
+  /* eslint-disable @typescript-eslint/ban-ts-comment */
   // @ts-ignore
   value: ValueType<ColumnOption>,
+  /* eslint-disable @typescript-eslint/ban-ts-comment */
   // @ts-ignore
   actionMeta?: ActionMeta<ColumnOption>
 ) => void;

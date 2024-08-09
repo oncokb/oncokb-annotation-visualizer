@@ -55,30 +55,27 @@ export default class OncoKBTable<T> extends React.Component<
   };
 
   @computed
-  get filteredData() {
+  get filteredData(): T[] {
     return this.props.data.filter((item: T) => {
-      const filterableColumns = this.props.columns.filter(
-        column => !!column.onFilter
-      );
+      const filterableColumns = this.props.columns.filter(column => column.onFilter);
+      
       if (filterableColumns.length > 0) {
-        return filterableColumns
-          .map(column => column.onFilter!(item, this.state.searchKeyword))
-          .includes(true);
+        return filterableColumns.some(column => column.onFilter?.(item, this.state.searchKeyword) === true);
       } else {
         return true;
       }
     });
-  }
+  }  
 
-  componentDidUpdate() {
+  componentDidUpdate():void {
     this.toggleOverflowClass();
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.toggleOverflowClass();
   }
 
-  toggleOverflowClass() {
+  toggleOverflowClass(): void {
     const tableBody = document.querySelector(
       '.oncoKBTable-container .oncokbTable-main .rt-table .rt-tbody'
     );
@@ -93,7 +90,7 @@ export default class OncoKBTable<T> extends React.Component<
     }
   }
 
-  render() {
+  render():JSX.Element {
     const NoDataConst = () => (
       <div className="text-center justify-center no-results">No Results</div>
     );

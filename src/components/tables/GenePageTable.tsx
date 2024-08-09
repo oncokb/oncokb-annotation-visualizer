@@ -1,17 +1,19 @@
 import OncoKBTable, { SearchColumn } from './OncoKBTable';
 import {
+  AnnotationImplication,
   HandleColumnsChange,
   LG_TABLE_FIXED_HEIGHT,
   MUTATIONS_TABLE_COLUMN_KEY,
   THRESHOLD_TABLE_FIXED_HEIGHT,
+  TreatmentImplication,
   TREATMENTS_TABLE_COLUMN_KEY,
 } from '../../config/constants';
 import React from 'react';
 import { SortingRule } from 'react-table';
 
 export const GenePageTable: React.FunctionComponent<{
-  data: any[];
-  columns: SearchColumn<any>[];
+  data: (TreatmentImplication | AnnotationImplication)[];
+  columns: SearchColumn<TreatmentImplication | AnnotationImplication>[];
   isPending: boolean;
   defaultSorted?: SortingRule[];
   selectedAnnotationColumns: string[];

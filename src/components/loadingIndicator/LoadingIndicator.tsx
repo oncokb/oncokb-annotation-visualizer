@@ -13,7 +13,7 @@ export enum LoaderSize {
 
 export interface ILoader {
   isLoading: boolean;
-  style?: any;
+  style?: React.CSSProperties;
   color?: string;
   center?: boolean;
   centerRelativeToContainer?: boolean;

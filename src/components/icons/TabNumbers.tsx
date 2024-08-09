@@ -7,7 +7,7 @@ export interface TabNumbersProps {
 }
 
 class TabNumbers extends React.Component<TabNumbersProps> {
-  getWidth = (num: number) => {
+  getWidth (num: number): (string) {
     if (num < 100) {
       return '1.2rem';
     } else if (num >= 100 && num < 1000) {
@@ -15,9 +15,9 @@ class TabNumbers extends React.Component<TabNumbersProps> {
     } else {
       return '2rem';
     }
-  };
+  }
 
-  render() {
+  render(): JSX.Element {
     const alterationCountStyle = {
       width: this.getWidth(this.props.number),
       lineHeight: '1.2rem',

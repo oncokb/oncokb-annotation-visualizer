@@ -22,10 +22,12 @@ export const LevelWithDescription: React.FunctionComponent<{
     if (props.description) {
       return <span>{props.description}</span>;
     }
+  
     const match: InfoLevel | undefined = _.find(
-      props.appStore!.appInfo.result.levels,
+      props.appStore?.appInfo?.result?.levels,
       (level: InfoLevel) => level.levelOfEvidence === levelOfEvidence
     );
+  
     return match ? (
       <div style={{ maxWidth: 300 }}>
         {ReactHtmlParser(match.htmlDescription)}

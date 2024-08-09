@@ -212,7 +212,7 @@ export class AnnotationVisualisation extends React.Component<
   handleTreatmentColumnsChange = (selectedOptions: ColumnOption[]):void => {
     this.setState({
       selectedTreatmentColumns: selectedOptions.map(
-        (option: any) => option.value
+        (option: ColumnOption) => option.value
       ),
     });
     localStorage.setItem(
@@ -235,7 +235,7 @@ export class AnnotationVisualisation extends React.Component<
         alterationType
       ),
       onFilter: (data: TreatmentImplication, keyword) =>
-        filterByKeyword((data as any)[column.prop], keyword),
+        filterByKeyword(data[column.prop as keyof TreatmentImplication], keyword),
     }));
   }
 
@@ -254,7 +254,7 @@ export class AnnotationVisualisation extends React.Component<
         alterationType
       ),
       onFilter: (data: AnnotationImplication, keyword) =>
-        filterByKeyword((data as any)[column.prop], keyword),
+        filterByKeyword(data [column.prop as keyof(AnnotationImplication)], keyword),
     }));
   }
 
@@ -364,7 +364,7 @@ export class AnnotationVisualisation extends React.Component<
     return annotations;
   }
 
-  getAPIResponsesList() {
+  getAPIResponsesList() : APIResponse[] {
     return [
       ...this.props.data['mutationData'],
       ...this.props.data['cnaData'],
@@ -372,7 +372,7 @@ export class AnnotationVisualisation extends React.Component<
     ];
   }
 
-  render() {
+  render() : JSX.Element {
     return (
       <>
         {this.props.isPatientInfoVisible && (

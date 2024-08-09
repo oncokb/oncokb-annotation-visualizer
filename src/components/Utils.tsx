@@ -8,8 +8,9 @@ import {
   TREATMENTS_TABLE_COLUMN_KEY,
   ProcessedData,
   ProcessedTreatmentData,
+  TreatmentImplication,
+  AnnotationImplication,
 } from './../config/constants';
-import { Alteration } from '../config/constants';
 import html2pdf from 'html2pdf.js';
 import InfoIcon from './icons/InfoIcon';
 import {
@@ -41,16 +42,16 @@ export interface IAlteration {
   name: string;
 }
 
-export const isCategoricalAlteration = (alteration: string) => {
+export function isCategoricalAlteration(alteration: string): (string | boolean) {
   return (
     alteration &&
     CATEGORICAL_ALTERATIONS.filter(alt =>
       alteration.toLowerCase().startsWith(alt.toLowerCase())
     ).length > 0
   );
-};
+}
 
-export const getCategoricalAlteration = (alteration: string) => {
+export function getCategoricalAlteration (alteration: string): (string|undefined) {
   if (isCategoricalAlteration(alteration)) {
     const matched = CATEGORICAL_ALTERATIONS.filter(categoricalAlt => {
       return alteration.toLowerCase().startsWith(categoricalAlt.toLowerCase());
@@ -58,7 +59,7 @@ export const getCategoricalAlteration = (alteration: string) => {
     return matched.pop();
   }
   return alteration;
-};
+}
 
 /**
  *
@@ -89,7 +90,7 @@ export function getAlterationName(
 }
 
 const SLASH_HTML_ENTITY_CODE = '%2F';
-export function encodeSlash(content: string | undefined) {
+export function encodeSlash(content: string | undefined):(string|undefined) {
   return content
     ? content.replace(new RegExp('/', 'g'), SLASH_HTML_ENTITY_CODE)
     : content;
@@ -282,7 +283,7 @@ export const AlterationPageLink: React.FunctionComponent<{
 };
 
 
-export function defaultSortMethod(a: any, b: any): number {
+export function defaultSortMethod(a: string | ONCOGENICITY | number , b: string | ONCOGENICITY | number ): number {
   // force null and undefined to the bottom
   a = a === null || a === undefined ? -Infinity : a;
   b = b === null || b === undefined ? -Infinity : b;
@@ -326,7 +327,7 @@ const mutationEffectOrder = [
   MUTATION_EFFECT.UNKNOWN,
 ];
 
-export function sortByArrayIndexAsc(aIndex: number, bIndex: number) {
+export function sortByArrayIndexAsc(aIndex: number, bIndex: number): number {
   if (aIndex === bIndex) {
     return 0;
   } else if (aIndex === -1) {
@@ -338,7 +339,7 @@ export function sortByArrayIndexAsc(aIndex: number, bIndex: number) {
   }
 }
 
-export function sortByArrayIndexDesc(aIndex: number, bIndex: number) {
+export function sortByArrayIndexDesc(aIndex: number, bIndex: number): number {
   if (aIndex === bIndex) {
     return 0;
   } else if (aIndex === -1) {
@@ -350,7 +351,7 @@ export function sortByArrayIndexDesc(aIndex: number, bIndex: number) {
   }
 }
 
-export function oncogenicitySortMethod(a: ONCOGENICITY, b: ONCOGENICITY) {
+export function oncogenicitySortMethod(a: ONCOGENICITY, b: ONCOGENICITY): number {
   return sortByArrayIndexDesc(
     oncogenicityOrder.indexOf(a),
     oncogenicityOrder.indexOf(b)
@@ -360,14 +361,14 @@ export function oncogenicitySortMethod(a: ONCOGENICITY, b: ONCOGENICITY) {
 export function mutationEffectSortMethod(
   a: MUTATION_EFFECT,
   b: MUTATION_EFFECT
-) {
+): number {
   return sortByArrayIndexAsc(
     mutationEffectOrder.indexOf(a),
     mutationEffectOrder.indexOf(b)
   );
 }
 
-export function level2LevelOfEvidence(level: LEVELS) {
+export function level2LevelOfEvidence(level: LEVELS):string {
   switch (level) {
     case LEVELS.Tx3:
     case LEVELS.Tx3A:
@@ -473,7 +474,7 @@ export const EvidenceLevelIcon: React.FunctionComponent<{
   );
 };
 
-export function getDefaultColumnDefinition<T>(
+export function getDefaultColumnDefinition(
   columnKey: MUTATIONS_TABLE_COLUMN_KEY | TREATMENTS_TABLE_COLUMN_KEY,
   viewportWidth: number,
   alterationType: string
@@ -484,10 +485,10 @@ export function getDefaultColumnDefinition<T>(
       accessor: string;
       minWidth?: number;
       width: number;
-      style?: any;
+      style?: React.CSSProperties;
       defaultSortDesc: boolean;
-      Cell?: React.FC<{ original: unknown }>;
-      sortMethod?: (a: unknown, b: unknown) => number;
+      Cell?: React.FC<{ original: AnnotationImplication} > | React.FC<{ original: TreatmentImplication} >;
+      sortMethod?: {a: number, b: number} | {a: string, b: string} | {a: ONCOGENICITY, b: ONCOGENICITY} ;
       sortable?: boolean;
     }
   | undefined {
@@ -501,7 +502,7 @@ export function getDefaultColumnDefinition<T>(
         minWidth: 100,
         defaultSortDesc: false,
         sortMethod: defaultSortMethod,
-        Cell: (props: { original: any }) => (
+        Cell: (props: { original: AnnotationImplication }) => (
           <GenePageLink hugoSymbol={props.original.gene} />
         ),
       };
@@ -514,7 +515,7 @@ export function getDefaultColumnDefinition<T>(
         minWidth: 120,
         defaultSortDesc: false,
         sortMethod: defaultSortMethod,
-        Cell: (props: { original: any }) => (
+        Cell: (props: { original: AnnotationImplication }) => (
           <AlterationPageLink
             hugoSymbol={props.original.gene}
             alteration={props.original.mutation}
@@ -531,7 +532,7 @@ export function getDefaultColumnDefinition<T>(
         defaultSortDesc: true,
         sortable: true,
         sortMethod: oncogenicitySortMethod,
-        Cell: (props: any) => (
+        Cell: (props: { original: AnnotationImplication }) => (
           <div className={'d-flex justify-content-center'}>
             <span className="fa-stack">
               <OncoKBLevelIcon
@@ -575,7 +576,7 @@ export function getDefaultColumnDefinition<T>(
             LEVEL_PRIORITY.indexOf(b.replace('LEVEL_', '') as LEVELS)
           );
         },
-        Cell: (props: any) => (
+        Cell: (props: { original: AnnotationImplication }) => (
           <div className={'d-flex justify-content-center'}>
             <span className="fa-stack">
               {props.original.level === 'NA' ? (
@@ -615,7 +616,7 @@ export function getDefaultColumnDefinition<T>(
         minWidth: viewportWidth * 0.275,
         defaultSortDesc: false,
         sortable: false,
-        Cell: (props: any) => (
+        Cell: (props: { original: AnnotationImplication }) => (
           <div className={'d-flex my-1'}>
             {props.original.mutationDescription !== 'NA' ? (
               <ReadMore text={props.original.mutationDescription} />
@@ -657,7 +658,7 @@ export function getDefaultColumnDefinition<T>(
         minWidth: 200,
         defaultSortDesc: false,
         sortMethod: defaultSortMethod,
-        Cell: (props: any) => (
+        Cell: (props: { original: TreatmentImplication }) => (
           <div className={'d-flex justify-content-center'}>
             <span>{props.original.drug}</span>
           </div>
@@ -696,7 +697,7 @@ export function getDefaultColumnDefinition<T>(
             LEVEL_PRIORITY.indexOf(b.replace('LEVEL_', '') as LEVELS)
           );
         },
-        Cell: (props: any) => (
+        Cell: (props: {original : AnnotationImplication}) => (
           <div className={'d-flex justify-content-center'}>
             {props.original.level === 'NA' ? (
               'NA'
@@ -740,7 +741,7 @@ export function getDefaultColumnDefinition<T>(
         minWidth: viewportWidth / 2.5,
         defaultSortDesc: false,
         sortable: false,
-        Cell: (props: any) => (
+        Cell:(props: { original: TreatmentImplication }) => (
           <div
             className={'d-flex justify-content-center my-1 left-align-content'}
           >
@@ -774,7 +775,7 @@ export function getDefaultColumnDefinition<T>(
             LEVEL_PRIORITY.indexOf(b.replace('LEVEL_', '') as LEVELS)
           );
         },
-        Cell: (props: any) => (
+        Cell: (props: { original: AnnotationImplication }) => (
           <div className={'d-flex justify-content-center'}>
             <span className="fa-stack">
               {props.original.fdaLevel === 'NA' ? (
@@ -809,7 +810,7 @@ export function getDefaultColumnDefinition<T>(
             LEVEL_PRIORITY.indexOf(b.replace('LEVEL_', '') as LEVELS)
           );
         },
-        Cell: (props: any) => (
+        Cell: (props: { original: TreatmentImplication }) => (
           <div className={'d-flex justify-content-center'}>
             <span className="fa-stack">
               {props.original.treatmentFdaLevel === 'NA' ? (
@@ -834,7 +835,7 @@ export function getDefaultColumnDefinition<T>(
   }
 }
 
-export function shortenTextByCharacters(text: string, cutoff: number) {
+export function shortenTextByCharacters(text: string, cutoff: number): string {
   const shortText = (text || '').trim();
   if (shortText.length <= cutoff) {
     return shortText;
@@ -846,7 +847,8 @@ export function shortenTextByCharacters(text: string, cutoff: number) {
   }
 }
 
-export const compareDates = (date1: string | null, date2: string | null) => {
+export function compareDates 
+(date1: string | null, date2: string | null) : (number) {
   const [day1, month1, year1] =
     date1 !== null ? date1.split('/').map(Number) : [0, 0, 0];
   const [day2, month2, year2] =
@@ -855,12 +857,12 @@ export const compareDates = (date1: string | null, date2: string | null) => {
   if (year1 !== year2) return year1 - year2;
   if (month1 !== month2) return month1 - month2;
   return day1 - day2;
-};
+}
 
-export const compareVersions = (
+export function compareVersions (
   version1: string | null,
   version2: string | null
-) => {
+) : number {
   const [major1, minor1] =
     version1 !== null ? version1.substring(1).split('.').map(Number) : [0, 0];
   const [major2, minor2] =
@@ -868,9 +870,9 @@ export const compareVersions = (
 
   if (major1 !== major2) return major1 - major2;
   return minor1 - minor2;
-};
+}
 
-export const loadImageAsBase64 = (path:string) => {
+export function loadImageAsBase64(path:string):Promise<string>   {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = 'Anonymous';
@@ -888,7 +890,7 @@ export const loadImageAsBase64 = (path:string) => {
       reject(new Error(`Failed to load image at path: ${path}`));
     
   });
-};
+}
 
 type PatientData={
   col1: string;

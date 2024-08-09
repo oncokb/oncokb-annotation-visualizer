@@ -486,8 +486,8 @@ export function getDefaultColumnDefinition<T>(
       width: number;
       style?: any;
       defaultSortDesc: boolean;
-      Cell?: React.FC<{ original: any }>;
-      sortMethod?: (a: any, b: any) => number;
+      Cell?: React.FC<{ original: unknown }>;
+      sortMethod?: (a: unknown, b: unknown) => number;
       sortable?: boolean;
     }
   | undefined {
@@ -884,8 +884,9 @@ export const loadImageAsBase64 = (path:string) => {
       const dataURL = c.toDataURL('image/png');
       resolve(dataURL);
     };
-    img.onerror = error =>
+    img.onerror = () =>
       reject(new Error(`Failed to load image at path: ${path}`));
+    
   });
 };
 

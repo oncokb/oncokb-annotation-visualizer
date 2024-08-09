@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import './styles.scss';
 
-const ReadMoreCell = ({ text }: { text: string }) => {
+interface ReadMoreCellProps {
+  text: string;
+}
+
+const ReadMoreCell: React.FC<ReadMoreCellProps> = ({ text }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleReadMore = () => setIsExpanded(!isExpanded);
 
-  const renderText = () => {
+  const renderText = (): JSX.Element => {
     if (isExpanded) {
       return (
         <div className="left-align-content" data-testid="read-more-button">

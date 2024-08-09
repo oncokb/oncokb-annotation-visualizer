@@ -1,6 +1,5 @@
 import React from 'react';
 import { COLOR_BLACK, COLOR_LIGHT_GREY } from './../../config/theme';
-import { reduce } from 'lodash';
 
 export interface TabNumbersProps {
   number: number;

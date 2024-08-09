@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent, expect } from '@storybook/test';
 import Dropdown from './../../components/dropdown/Dropdown';
 import './../../components/dropdown/Dropdown.scss'
@@ -32,22 +30,22 @@ const meta= {
 
 export default meta;
 
-const Template = (args) => {
-  const [selectedOptions, setSelectedOptions] = useState(args.selectedOptions);
+// const Template = (args) => {
+//   const [selectedOptions, setSelectedOptions] = useState(args.selectedOptions);
 
-  const handleChange = (newSelectedOptions) => {
-    setSelectedOptions(newSelectedOptions);
-    args.onChange(newSelectedOptions);
-  };
+//   const handleChange = (newSelectedOptions) => {
+//     setSelectedOptions(newSelectedOptions);
+//     args.onChange(newSelectedOptions);
+//   };
 
-  return (
-    <Dropdown
-      {...args}
-      selectedOptions={selectedOptions}
-      onChange={handleChange}
-    />
-  );
-};
+//   return (
+//     <Dropdown
+//       {...args}
+//       selectedOptions={selectedOptions}
+//       onChange={handleChange}
+//     />
+//   );
+// };
 
 export const Default= {
   args: {

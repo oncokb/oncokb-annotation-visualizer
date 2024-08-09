@@ -1,7 +1,7 @@
 import React from 'react';
 import { within, userEvent, expect } from '@storybook/test';
 import { AnnotationVisualisation } from '../../AnnotationVisualisation';
-import { APIResponse1, APIResponse2, APIResponse3, APIResponse4, APIResponse5, APIResponse6, totalData } from '../../config/APIResponse';
+import {  totalData } from '../../config/APIResponse';
 import './../ReactTable.scss';
 
 export default {
@@ -35,8 +35,6 @@ export default {
     },
   },
 };
-
-const Template = (args) => <AnnotationVisualisation {...args} />;
 
 export const Default = {
   args: {

@@ -11,6 +11,10 @@ import {
   AnnotationImplication,
   TreatmentImplication,
   NotificationImplication,
+  Drug,
+  APIResponse,
+  ColumnOption,
+  Treatment,
 } from './config/constants';
 import Tab from './components/tabs/Tab';
 import Tabs from './components/tabs/Tabs';
@@ -19,7 +23,6 @@ import TabNumbers from './components/tabs/TabNumbers';
 import {
   defaultAnnotationColumns,
   defaultTreatmentColumns,
-  TREATMENTS_TABLE_COLUMN_KEY,
   ANNOTATION_TYPE,
   annotationColumns,
   treatmentColumns,
@@ -28,10 +31,16 @@ import {
 import { compareDates, compareVersions } from './components/Utils';
 
 export interface AnnotationVisualisationProps {
-  data: any;
+  data: Data;
   patientInfo: PatientInfo;
   isPatientInfoVisible?: boolean;
   notifications: NotificationImplication[];
+}
+
+interface Data{
+  mutationData: APIResponse[],
+  cnaData: APIResponse[],
+  structuralVariant: APIResponse[]
 }
 
 interface metadata{
@@ -151,7 +160,7 @@ export class AnnotationVisualisation extends React.Component<
     this.handleResize = this.handleResize.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount():void {
     const savedAnnotationColumns = localStorage.getItem(
       'selectedAnnotationColumns'
     );
@@ -180,27 +189,27 @@ export class AnnotationVisualisation extends React.Component<
     }
     window.addEventListener('resize', this.handleResize);
   }
-  componentWillUnmount() {
+  componentWillUnmount():void {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  handleResize() {
+  handleResize():void {
     this.setState({ viewportWidth: window.innerWidth });
   }
 
-  handleAnnotationColumnsChange = (selectedOptions: any) => {
+  handleAnnotationColumnsChange = (selectedOptions: ColumnOption[]):void => {
     this.setState({
-      selectedAnnotationColumns: selectedOptions.map((option: any) =>
-        option.value ? option.value : option.prop
+      selectedAnnotationColumns: selectedOptions.map((option: ColumnOption) =>
+        option.value 
       ),
     });
     localStorage.setItem(
       'selectedAnnotationColumns',
-      JSON.stringify(selectedOptions.map((option: any) => option.value))
+      JSON.stringify(selectedOptions.map((option: ColumnOption) => option.value))
     );
   };
 
-  handleTreatmentColumnsChange = (selectedOptions: any) => {
+  handleTreatmentColumnsChange = (selectedOptions: ColumnOption[]):void => {
     this.setState({
       selectedTreatmentColumns: selectedOptions.map(
         (option: any) => option.value
@@ -208,7 +217,7 @@ export class AnnotationVisualisation extends React.Component<
     });
     localStorage.setItem(
       'selectedTreatmentColumns',
-      JSON.stringify(selectedOptions.map((option: any) => option.value))
+      JSON.stringify(selectedOptions.map((option: ColumnOption) => option.value))
     );
   };
 
@@ -218,9 +227,6 @@ export class AnnotationVisualisation extends React.Component<
     const selectedKeys = this.state.selectedTreatmentColumns;
     const filteredColumns = treatmentColumns.filter(col =>
       selectedKeys.includes(col.key)
-    );
-    const hasAnnotation = selectedKeys.some(
-      column => column === TREATMENTS_TABLE_COLUMN_KEY.ANNOTATION
     );
     return filteredColumns.map(column => ({
       ...getDefaultColumnDefinition(
@@ -254,7 +260,7 @@ export class AnnotationVisualisation extends React.Component<
 
   getTreatments(
     annotationType: ANNOTATION_TYPE,
-    data: any
+    data: APIResponse[]
   ): TreatmentImplication[] {
     const treatmentsMap: Map<string, TreatmentImplication> = new Map();
 
@@ -266,7 +272,7 @@ export class AnnotationVisualisation extends React.Component<
           continue;
         }
 
-        response['treatments'].forEach((treatment: any) => {
+        response['treatments'].forEach((treatment: Treatment) => {
           if (!treatment || !treatment['drugs']) {
             return;
           }
@@ -291,14 +297,14 @@ export class AnnotationVisualisation extends React.Component<
           const biomarkerKey = `${biomarker}-${level}`;
 
           const drugNames = treatment['drugs']
-            .map((drug: any) => drug['drugName'])
+            .map((drug: Drug) => drug['drugName'])
             .filter(Boolean);
 
           if (treatmentsMap.has(biomarkerKey)) {
             const existingEntry = treatmentsMap.get(biomarkerKey);
             if (existingEntry) {
               const existingDrugs = new Set(existingEntry.drug.split(', '));
-              drugNames.forEach((drug: any) => existingDrugs.add(drug));
+              drugNames.forEach((drug: string) => existingDrugs.add(drug));
               existingEntry.drug = Array.from(existingDrugs).join(', ');
             }
           } else {
@@ -321,9 +327,9 @@ export class AnnotationVisualisation extends React.Component<
 
   getAnnotations(
     annotationType: ANNOTATION_TYPE,
-    data: any
+    data: APIResponse[]
   ): AnnotationImplication[] {
-    const listData: AnnotationImplication[] = [];
+    const listData: APIResponse[] = [];
 
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -332,7 +338,7 @@ export class AnnotationVisualisation extends React.Component<
       }
     }
 
-    const annotations = listData.map((response: any) => {
+    const annotations = listData.map((response: APIResponse) => {
       return {
         level: response['highestSensitiveLevel'] || 'NA',
         gene: response['query']['hugoSymbol'] || 'NA',
@@ -360,9 +366,9 @@ export class AnnotationVisualisation extends React.Component<
 
   getAPIResponsesList() {
     return [
-      ...this.props.data['mutations'],
+      ...this.props.data['mutationData'],
       ...this.props.data['cnaData'],
-      ...this.props.data['structuralVariants'],
+      ...this.props.data['structuralVariant'],
     ];
   }
 

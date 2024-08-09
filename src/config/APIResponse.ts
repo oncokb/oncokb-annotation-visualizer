@@ -3,6 +3,9 @@ import {
   NotificationImplication,
   TreatmentImplication,
   NOTIFICATION_TYPE,
+  APIResponse,
+  Treatment,
+  Drug,
 } from './constants';
 export const patientId = 'P-0000435';
 export const patientInfo = {
@@ -1346,10 +1349,10 @@ export const exampleAnnotations: AnnotationImplication[] = responses.map(
   })
 );
 export const exampleTreatments: TreatmentImplication[] = responses.reduce(
-  (acc: TreatmentImplication[], response: any) => {
+  (acc: TreatmentImplication[], response: APIResponse) => {
     const treatments = response.treatments.reduce(
-      (tAcc: TreatmentImplication[], treatment: any) => {
-        const drugs = treatment.drugs.map((drug: any) => ({
+      (tAcc: TreatmentImplication[], treatment: Treatment) => {
+        const drugs = treatment.drugs.map((drug: Drug) => ({
           biomarker: `${response.query.hugoSymbol} ${response.query.alteration}`,
           drug: drug.drugName,
           level: treatment.level,

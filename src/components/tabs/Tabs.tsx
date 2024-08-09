@@ -2,10 +2,11 @@ import React, { useState, ReactElement } from 'react';
 import { TabProps } from './Tab';
 import './styles.scss';
 import Notifications from './../notifications/notifications';
-import { NotificationImplication, PatientInfo } from './../../config/constants';
+import { APIResponse, NotificationImplication, PatientInfo } from './../../config/constants';
 import { COLOR_BLUE } from './../../config/theme';
 import { generatePDF } from './../Utils';
-import { responses } from './../../config/APIResponse';
+import { Drug } from './../../config/constants';
+// import { responses } from './../../config/APIResponse';
 
 interface TabsProps {
   children: ReactElement<TabProps>[];
@@ -17,7 +18,7 @@ interface TabsProps {
   notifications?: NotificationImplication[];
   bgColor?: string;
   patientInfo: PatientInfo;
-  responseList: any;
+  responseList: APIResponse[];
 }
 
 const Tabs: React.FC<TabsProps> = ({
@@ -55,7 +56,7 @@ const Tabs: React.FC<TabsProps> = ({
         },
       ];
 
-      const processedData = responses.map(response => ({
+      const processedData = responseList.map(response => ({
         gene: response.query.hugoSymbol || 'NA',
         mutation: response.query.alteration || 'NA',
         oncogenicity: response.oncogenic || 'NA',
@@ -64,7 +65,7 @@ const Tabs: React.FC<TabsProps> = ({
         tumorType: response.query.tumorType || 'NA',
         alterationType: response.query.alterationType || 'NA',
       }));
-      const processedTreatmentData = responses.map(response => ({
+      const processedTreatmentData = responseList.map(response => ({
         biomarker:
           response['query']['hugoSymbol'] && response['query']['alteration']
             ? `${response['query']['hugoSymbol']} ${response['query']['alteration']}`
@@ -72,7 +73,7 @@ const Tabs: React.FC<TabsProps> = ({
         drugNames: response['treatments']
           ? response['treatments'][0]['drugs']
               .map(
-                (drug: any) =>
+                (drug: Drug) =>
                   ` ${drug['drugName']} (${
                     response['treatments'][0]['level'].length > 6
                       ? response['treatments'][0]['level'].slice(6)

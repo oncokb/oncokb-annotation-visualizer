@@ -28,7 +28,7 @@ export default class LoadingIndicator extends React.Component<ILoader, unknown> 
     size: LoaderSize.SMALL,
   };
 
-  public render() {
+  public render(): JSX.Element {
     const color = this.props.color
       ? this.props.color
       : this.props.size === LoaderSize.LARGE

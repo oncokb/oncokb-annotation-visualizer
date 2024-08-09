@@ -15,12 +15,12 @@ export default [
     input: "src/index.ts",
     output: [
       {
-        dir: "dist/cjs", 
+        dir: packageJson.main,
         format: "cjs",
         sourcemap: true,
       },
       {
-        dir: "dist/esm", 
+        dir: packageJson.module,
         format: "esm",
         sourcemap: true,
       },
@@ -35,7 +35,7 @@ export default [
       image(),
       json()
     ],
-    external: ["react", "react-dom", "fs", "indexof"],
+    external: ["react", "react-dom", "fs"],
   },
   {
     input: "src/index.ts",

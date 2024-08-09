@@ -1,4 +1,3 @@
-import { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent, expect } from '@storybook/test';
 import Notification from './../../components/notifications/notifications';
 import React from 'react';
@@ -43,9 +42,7 @@ export const Default = {
       { message: 'Notification 2', type: 'success' },
     ],
   },
-  play: async ({ canvasElement, args }) => {
-    const { numNotifications } = args;
-    
+  play: async ({ canvasElement}) => {
     const canvas = within(canvasElement);
 
     await userEvent.click(canvas.getByTestId('notification-icon'));

@@ -130,7 +130,7 @@ export enum MUTATION_EFFECT {
 }
 
 type ValueType<T> = T;
-type ActionMeta<T> = { action: string; name: string; };
+type ActionMeta = { action: string; name: string; };
 
 
 export type HandleColumnsChange = (
@@ -479,3 +479,91 @@ export type Alteration = {
 
   variantResidues: string;
 };
+
+interface MutationEffect {
+  knownEffect: string;
+  description: string;
+  citations: {
+    pmids: string[];
+    abstracts: {
+      link: string;
+      abstract: string;
+    }[];
+  };
+}
+
+export interface Drug
+  {
+    ncitCode: string;
+    drugName: string;
+  }
+
+
+export interface Treatment {
+  alterations: string[];
+  drugs: Drug[];
+  approvedIndications: unknown[];
+  level: string;
+  fdaLevel: string;
+  levelAssociatedCancerType: {
+    id: number;
+    code: string;
+    color: string;
+    name: string;
+    mainType: {
+      id: number | null;
+      name: string;
+      tumorForm: string;
+    };
+    tissue: string;
+    children: unknown;
+    parent: unknown;
+    level: number;
+    tumorForm: string;
+  };
+  levelExcludedCancerTypes: unknown[];
+  pmids: string[];
+  abstracts: unknown[];
+  description: string;
+}
+
+export interface APIResponse {
+  query: {
+    id: string | null;
+    referenceGenome: string;
+    hugoSymbol: string;
+    entrezGeneId: number;
+    alteration: string;
+    alterationType: string;
+    svType: string | null;
+    tumorType: string;
+    consequence: string | null;
+    proteinStart: string | null;
+    proteinEnd: string | null;
+    hgvs: string | null;
+  };
+  geneExist: boolean;
+  variantExist: boolean;
+  alleleExist: boolean;
+  oncogenic: string;
+  mutationEffect: MutationEffect;
+  highestSensitiveLevel: string;
+  highestResistanceLevel: string | null;
+  highestDiagnosticImplicationLevel: string | null;
+  highestPrognosticImplicationLevel: string | null;
+  highestFdaLevel: string;
+  otherSignificantSensitiveLevels: unknown[];
+  otherSignificantResistanceLevels: unknown[];
+  hotspot: boolean;
+  geneSummary: string;
+  variantSummary: string;
+  tumorTypeSummary: string;
+  prognosticSummary: string;
+  diagnosticSummary: string;
+  diagnosticImplications: unknown[];
+  prognosticImplications: unknown[];
+  treatments: Treatment[];
+  dataVersion: string;
+  lastUpdate: string;
+  vus: boolean;
+}

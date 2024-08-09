@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { computed } from 'mobx';
 import classNames from 'classnames';
 import {
-  HandleColumnsChange,
+  ColumnOption,
   MUTATIONS_TABLE_COLUMN_KEY,
   TREATMENTS_TABLE_COLUMN_KEY,
 } from './../../config/constants';
@@ -33,7 +33,7 @@ interface ITableWithSearchBox<T> extends Partial<TableProps<T>> {
     label: string;
     prop: string;
   }[];
-  handleColumnsChange: HandleColumnsChange;
+  handleColumnsChange: (selectedOptions: ColumnOption[]) => void;
 }
 
 @observer

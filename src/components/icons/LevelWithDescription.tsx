@@ -8,10 +8,9 @@ import { InfoLevel } from '../../config/constants';
 import _ from 'lodash';
 import { level2LevelOfEvidence } from '../Utils';
 import ReactHtmlParser from 'react-html-parser';
-import { LEVELS } from '../../config/constants';
 
 export const LevelWithDescription: React.FunctionComponent<{
-  level: LEVELS;
+  level: string;
   appStore?: AppStore;
   description?: string;
   children?: React.ReactNode;

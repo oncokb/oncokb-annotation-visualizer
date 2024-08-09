@@ -157,6 +157,9 @@ const getDefaultLinkContent = (levelType: LEVEL_TYPES, version?: Version) => {
   return content;
 };
 
+/*eslint-disable @typescript-eslint/no-explicit-any */
+type SortFunction = (a: any, b: any) => number;
+
 export const LevelOfEvidencePageLink: React.FunctionComponent<{
   levelType: LEVEL_TYPES;
   version?: Version;
@@ -368,7 +371,7 @@ export function mutationEffectSortMethod(
   );
 }
 
-export function level2LevelOfEvidence(level: LEVELS):string {
+export function level2LevelOfEvidence(level: string):string {
   switch (level) {
     case LEVELS.Tx3:
     case LEVELS.Tx3A:
@@ -398,7 +401,7 @@ export function LevelOfEvidenceToClassnames(level: string): string | null {
 }
 
 export const FdaLevelIcon: React.FunctionComponent<{
-  level: LEVELS;
+  level: string;
   withDescription?: boolean;
 }> = ({ level, withDescription = true }) => {
   const fdaIcon = level ? (
@@ -443,7 +446,7 @@ export function filterByKeyword(
 }
 
 export const OncoKBLevelIcon: React.FunctionComponent<{
-  level: LEVELS;
+  level: string;
   withDescription?: boolean;
 }> = ({ level, withDescription = true }) => {
   const oncokbIcon = level ? (
@@ -459,7 +462,7 @@ export const OncoKBLevelIcon: React.FunctionComponent<{
 };
 
 export const EvidenceLevelIcon: React.FunctionComponent<{
-  level: LEVELS;
+  level: string;
   withDescription?: boolean;
 }> = ({ level, withDescription = true }) => {
   const oncokbIcon = level ? (
@@ -488,7 +491,7 @@ export function getDefaultColumnDefinition(
       style?: React.CSSProperties;
       defaultSortDesc: boolean;
       Cell?: React.FC<{ original: AnnotationImplication} > | React.FC<{ original: TreatmentImplication} >;
-      sortMethod?: {a: number, b: number} | {a: string, b: string} | {a: ONCOGENICITY, b: ONCOGENICITY} ;
+      sortMethod?: SortFunction ; 
       sortable?: boolean;
     }
   | undefined {

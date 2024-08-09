@@ -7,21 +7,21 @@ import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import postcss from "rollup-plugin-postcss";
 
-const packageJson = require("./package.json");
+const name = require('./package.json').main.replace(/\.js$/, '')
 const dts = require('rollup-plugin-dts').default;
 
 export default [
   {
-    input: "src/index.ts",
+    input: 'src/index.ts',
     output: [
       {
-        dir: packageJson.main,
-        format: "cjs",
+        dir: `${name}.js`,
+        format: 'cjs',
         sourcemap: true,
       },
       {
-        dir: packageJson.module,
-        format: "esm",
+        dir: `${name}.mjs`,
+        format: 'es',
         sourcemap: true,
       },
     ],
@@ -31,17 +31,23 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
-      postcss(),
+      postcss({
+        extract: true,  
+        minimize: true, 
+        sourceMap: true, 
+      }),
       image(),
       json()
     ],
     external: ["react", "react-dom", "fs"],
   },
   {
-    input: "src/index.ts",
-    output: { file: packageJson.types },
+    input: 'src/index.ts',
+    output: {
+      file: `${name}.d.ts`,
+      format: 'es',
+    },
     plugins: [dts()],
-    external: [/\.css$/, /\.scss$/],
+    external: [/\.css$/, /\.scss$/], 
   },
 ];
-

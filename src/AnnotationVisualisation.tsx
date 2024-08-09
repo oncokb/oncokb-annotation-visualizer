@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import * as React from 'react';
 import { COLOR_BLUE } from './config/theme';
 import { GenePageTable } from './components/tables/GenePageTable';
@@ -30,6 +31,12 @@ import {
 } from './config/constants';
 import { compareDates, compareVersions } from './components/Utils';
 
+interface Data{
+  mutationData: APIResponse[];
+  cnaData: APIResponse[];
+  structuralVariant: APIResponse[];
+}
+
 export interface AnnotationVisualisationProps {
   data: Data;
   patientInfo: PatientInfo;
@@ -37,15 +44,9 @@ export interface AnnotationVisualisationProps {
   notifications: NotificationImplication[];
 }
 
-interface Data{
-  mutationData: APIResponse[],
-  cnaData: APIResponse[],
-  structuralVariant: APIResponse[]
-}
-
-interface metadata{
-    lastUpdate: string,
-    dataVersion: string,
+interface MetaData{
+    lastUpdate: string;
+    dataVersion: string;
 }
 
 export interface AnnotationVisualisationState {
@@ -111,7 +112,7 @@ export class AnnotationVisualisation extends React.Component<
   get structuralTreatments(): TreatmentImplication[] {
     return this.getTreatments(
       ANNOTATION_TYPE.STRUCTURAL_VARIANT,
-      this.props.data['structualVariantData']
+      this.props.data['structuralVariant']
     );
   }
 
@@ -125,7 +126,7 @@ export class AnnotationVisualisation extends React.Component<
   }
 
   @computed
-  get lastUpdateAndVersion(): metadata {
+  get lastUpdateAndVersion(): MetaData {
     let latestDate: string | null = null;
     let highestVersion: string | null = null;
     this.allAnnotations.forEach(annotation => {
@@ -160,7 +161,7 @@ export class AnnotationVisualisation extends React.Component<
     this.handleResize = this.handleResize.bind(this);
   }
 
-  componentDidMount():void {
+  componentDidMount(): void {
     const savedAnnotationColumns = localStorage.getItem(
       'selectedAnnotationColumns'
     );
@@ -189,15 +190,15 @@ export class AnnotationVisualisation extends React.Component<
     }
     window.addEventListener('resize', this.handleResize);
   }
-  componentWillUnmount():void {
+  componentWillUnmount(): void {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  handleResize():void {
+  handleResize(): void {
     this.setState({ viewportWidth: window.innerWidth });
   }
 
-  handleAnnotationColumnsChange = (selectedOptions: ColumnOption[]):void => {
+  handleAnnotationColumnsChange = (selectedOptions: ColumnOption[]): void => {
     this.setState({
       selectedAnnotationColumns: selectedOptions.map((option: ColumnOption) =>
         option.value 
@@ -209,7 +210,7 @@ export class AnnotationVisualisation extends React.Component<
     );
   };
 
-  handleTreatmentColumnsChange = (selectedOptions: ColumnOption[]):void => {
+  handleTreatmentColumnsChange = (selectedOptions: ColumnOption[]): void => {
     this.setState({
       selectedTreatmentColumns: selectedOptions.map(
         (option: ColumnOption) => option.value
@@ -236,7 +237,7 @@ export class AnnotationVisualisation extends React.Component<
       ),
       onFilter: (data: TreatmentImplication, keyword) =>
         filterByKeyword(data[column.prop as keyof TreatmentImplication], keyword),
-    }));
+    })) as SearchColumn<TreatmentImplication>[];
   }
 
   annotationTableColumns(
@@ -255,7 +256,7 @@ export class AnnotationVisualisation extends React.Component<
       ),
       onFilter: (data: AnnotationImplication, keyword) =>
         filterByKeyword(data [column.prop as keyof(AnnotationImplication)], keyword),
-    }));
+    })) as SearchColumn<AnnotationImplication>[];
   }
 
   getTreatments(
@@ -364,7 +365,7 @@ export class AnnotationVisualisation extends React.Component<
     return annotations;
   }
 
-  getAPIResponsesList() : APIResponse[] {
+  getAPIResponsesList(): APIResponse[] {
     return [
       ...this.props.data['mutationData'],
       ...this.props.data['cnaData'],
@@ -372,7 +373,7 @@ export class AnnotationVisualisation extends React.Component<
     ];
   }
 
-  render() : JSX.Element {
+  render(): React.JSX.Element {
     return (
       <>
         {this.props.isPatientInfoVisible && (
@@ -398,7 +399,7 @@ export class AnnotationVisualisation extends React.Component<
           lastUpdate={this.lastUpdateAndVersion['lastUpdate']}
           notifications={this.props.notifications}
           patientInfo={this.props.patientInfo}
-          responseList={this.getAPIResponsesList}
+          responseList={this.getAPIResponsesList()}
         >
           <Tab
             eventKey="all"

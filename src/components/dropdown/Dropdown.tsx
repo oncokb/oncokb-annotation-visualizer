@@ -1,12 +1,11 @@
 import React, { useState, useRef } from 'react';
 import './Dropdown.scss';
 import { ColumnOption } from '../../config/constants';
-import { HandleColumnsChange } from '../../config/constants';
 
 interface DropdownProps {
   options: ColumnOption[];
   selectedOptions: string[];
-  onChange: HandleColumnsChange;
+  onChange: (selectedOptions: ColumnOption[]) => void;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ options, selectedOptions, onChange }) => {

@@ -32,4 +32,9 @@ yarn run storybook
 ```
 
 
+To build the package
+```
+yarn build
+```
+
 

@@ -27,7 +27,7 @@ export default [
     ],
     plugins: [
       peerDepsExternal(),
-      resolve(),
+      resolve({mainFields: ['browser', 'module', 'main'],}),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
@@ -39,7 +39,7 @@ export default [
       image(),
       json()
     ],
-    external: ["react", "react-dom", "fs"],
+    external: ["react", "react-dom"],
   },
   {
     input: 'src/index.ts',
@@ -48,6 +48,6 @@ export default [
       format: 'es',
     },
     plugins: [dts()],
-    external: [/\.css$/, /\.scss$/], 
+    external: [/\.css$/, /\.scss$/, "react", "react-dom", "fs", "worker_threads", /^src\/storybook/, /\.yarn$/], 
   },
 ];

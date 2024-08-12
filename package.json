@@ -31,7 +31,6 @@
     "cbioportal-frontend-commons": "^0.2.11",
     "cbioportal-utils": "^0.1.1",
     "classnames": "^2.2.6",
-    "fs": "^0.0.1-security",
     "html2pdf.js": "^0.10.2",
     "indexof": "^0.0.1",
     "jspdf": "^2.5.1",
@@ -78,5 +77,11 @@
     "sass": "^1.77.8",
     "tcm": "^1.0.15",
     "typescript": "4.0.3"
-  }
+  }, 
+  "browser": {
+  "fs": false,
+  "path": false,
+  "os": false,
+  "worker_threads": false
+}
 }

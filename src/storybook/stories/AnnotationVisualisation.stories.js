@@ -1,6 +1,6 @@
 import React from 'react';
 import { within, userEvent, expect } from '@storybook/test';
-import { AnnotationVisualisation } from '../../AnnotationVisualisation';
+import { AnnotationVisualisation } from '../../components/AnnotationVisualisation';
 import {  totalData } from '../../config/APIResponse';
 import './../ReactTable.scss';
 

@@ -1,0 +1,12 @@
+export declare const COLOR_BLUE = "#0968C3";
+export declare const COLOR_DARK_BLUE = "#064785";
+export declare const COLOR_DARKER_BLUE = "#0b2569";
+export declare const COLOR_PRIMARY = "#0968C3";
+export declare const COLOR_GREY = "#808080";
+export declare const COLOR_LIGHT_GREY = "#D3D3D3";
+export declare const COLOR_BLACK = "#000";
+export declare const COLOR_WARNING = "#ffc107";
+export declare const COLOR_ERROR = "#dc3545";
+export declare const COLOR_ICON_WITH_INFO = "#000";
+export declare const COLOR_ICON_WITHOUT_INFO = "#D3D3D3";
+//# sourceMappingURL=theme.d.ts.map

@@ -1,5 +1,5 @@
 import { within, userEvent, expect } from '@storybook/test';
-import Notification from './../../components/notifications/notifications';
+import Notification from '../../src/components/notifications/notifications';
 import React from 'react';
 
 const meta = {

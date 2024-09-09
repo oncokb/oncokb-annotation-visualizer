@@ -1,6 +1,6 @@
 import { within, userEvent, expect } from '@storybook/test';
-import Dropdown from './../../components/dropdown/Dropdown';
-import './../../components/dropdown/Dropdown.scss'
+import Dropdown from '../../src/components/dropdown/Dropdown';
+import '../../src/components/dropdown/Dropdown.scss'
 const meta= {
   title: 'Components/Dropdown',
   component: Dropdown,

@@ -33,8 +33,8 @@ import { compareDates, compareVersions } from './Utils';
 
 interface Data{
   mutationData: APIResponse[];
-  cnaData: APIResponse[];
-  structuralVariant: APIResponse[];
+  copyNumberAlterationData: APIResponse[];
+  structuralVariantData: APIResponse[];
 }
 
 export interface AnnotationVisualisationProps {
@@ -62,7 +62,7 @@ export class AnnotationVisualisation extends React.Component<
   get mutationsAnnotations(): AnnotationImplication[] {
     return this.getAnnotations(
       ANNOTATION_TYPE.MUTATION,
-      this.props.data['mutationData']
+      this.props.data.mutationData
     );
   }
 
@@ -70,7 +70,7 @@ export class AnnotationVisualisation extends React.Component<
   get copyNumberAnnotations(): AnnotationImplication[] {
     return this.getAnnotations(
       ANNOTATION_TYPE.COPY_NUMBER_ALTERATION,
-      this.props.data['cnaData']
+      this.props.data.copyNumberAlterationData
     );
   }
 
@@ -78,7 +78,7 @@ export class AnnotationVisualisation extends React.Component<
   get structuralAnnotations(): AnnotationImplication[] {
     return this.getAnnotations(
       ANNOTATION_TYPE.STRUCTURAL_VARIANT,
-      this.props.data['structuralVariant']
+      this.props.data.structuralVariantData
     );
   }
 
@@ -96,7 +96,7 @@ export class AnnotationVisualisation extends React.Component<
   get mutationsTreatments(): TreatmentImplication[] {
     return this.getTreatments(
       ANNOTATION_TYPE.MUTATION,
-      this.props.data['mutationData']
+      this.props.data.mutationData
     );
   }
 
@@ -104,7 +104,7 @@ export class AnnotationVisualisation extends React.Component<
   get copyNumberTreatments(): TreatmentImplication[] {
     return this.getTreatments(
       ANNOTATION_TYPE.COPY_NUMBER_ALTERATION,
-      this.props.data['cnaData']
+      this.props.data.copyNumberAlterationData
     );
   }
 
@@ -112,7 +112,7 @@ export class AnnotationVisualisation extends React.Component<
   get structuralTreatments(): TreatmentImplication[] {
     return this.getTreatments(
       ANNOTATION_TYPE.STRUCTURAL_VARIANT,
-      this.props.data['structuralVariant']
+      this.props.data.structuralVariantData
     );
   }
 
@@ -367,9 +367,9 @@ export class AnnotationVisualisation extends React.Component<
 
   getAPIResponsesList(): APIResponse[] {
     return [
-      ...this.props.data['mutationData'],
-      ...this.props.data['cnaData'],
-      ...this.props.data['structuralVariant'],
+      ...this.props.data.mutationData,
+      ...this.props.data.copyNumberAlterationData,
+      ...this.props.data.structuralVariantData,
     ];
   }
 

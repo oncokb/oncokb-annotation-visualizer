@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { within, expect } from '@storybook/test';
-import Alert, { NotificationType } from '../../components/alert/Alert';
-import { NOTIFICATION_TYPE } from '../../config/constants';
+import Alert, { NotificationType } from '../../src/components/alert/Alert';
+import { NOTIFICATION_TYPE } from '../../src/config/constants';
 
 const meta: Meta<typeof Alert> = {
   title: 'Components/Alert',

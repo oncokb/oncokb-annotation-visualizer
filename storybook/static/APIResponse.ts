@@ -6,7 +6,7 @@ import {
   APIResponse,
   Treatment,
   Drug,
-} from './constants';
+} from '../../src/config/constants';
 export const patientId = 'P-0000435';
 export const patientInfo = {
   patientId: 'P-0000435',
@@ -1400,6 +1400,6 @@ export const notifications: NotificationImplication[] = [
 
 export const totalData = {
   mutationData: [APIResponse1, APIResponse2],
-  cnaData: [APIResponse4, APIResponse5],
+  copyNumberAlterationData: [APIResponse4, APIResponse5],
   structuralVariantData: [APIResponse3, APIResponse6],
 };

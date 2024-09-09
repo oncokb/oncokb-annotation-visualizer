@@ -1,7 +1,7 @@
 import React from 'react';
 import { within, userEvent, expect } from '@storybook/test';
-import { AnnotationVisualisation } from '../../components/AnnotationVisualisation';
-import {  totalData } from '../../config/APIResponse';
+import { AnnotationVisualisation } from '../../src/components/AnnotationVisualisation';
+import {  totalData } from '../static/APIResponse';
 import './../ReactTable.scss';
 
 export default {
@@ -10,7 +10,7 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     data: {
-      description: 'Object containing mutationData, cnaData, and structuralVariantData arrays containing respective APIResponse.',
+      description: 'Object containing mutationData, copyNumberAlterationData, and structuralVariantData arrays containing respective APIResponse.',
     },
     patientId: {
       description: 'Unique identifier for the patient.',

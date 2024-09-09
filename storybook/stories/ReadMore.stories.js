@@ -1,7 +1,7 @@
 import React from 'react';
 import { within, userEvent, expect } from '@storybook/test';
-import  ReadMoreCell  from '../../components/readMore/ReadMore';
-import '../../components/dropdown/Dropdown.scss';
+import  ReadMoreCell  from '../../src/components/readMore/ReadMore';
+import '../../src/components/dropdown/Dropdown.scss';
 
 const meta = {
   title: 'Components/ReadMore',
